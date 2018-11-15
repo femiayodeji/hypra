@@ -1,7 +1,7 @@
 <?php
 class DbContext{
 	public static $host = "localhost";
-	public static $database = "edu-virel";
+	public static $database = "db_name";
 	public static $user = "root";
 	public static $password = "";
 

@@ -1,5 +1,5 @@
 <?php
-// header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *");
 require_once('./config/App_Constant.php');
 require_once('./config/App_Function.php');
 

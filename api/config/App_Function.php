@@ -118,17 +118,7 @@ function register($user){
 		if($isEmailUnique){
 			if($isUsernameUnique){
 				$id = guid();
-				$result = AccountController::query("INSERT INTO `user` SET uid=?, username=?, password=?, email=?",[$id,$user['username'],$password,$user['email']]);
-				if($result['status']){
-					//create a reference to user details
-					$user = AccountController::query("SELECT id,uid FROM user WHERE email=?",[$user['email']]);
-					if($user['status']){
-						$id = guid();
-						$userId = $user['status']['uid'];
-						$result += AccountController::query("INSERT INTO `userdetails` SET uid=?, userid=?",[$id,$userId]);
-					}
-
-				}
+				$result = AccountController::query("INSERT INTO `appuser` SET uid=?, username=?, password=?, email=?",[$id,$user['username'],$password,$user['email']]);
 				json($result);
 			}
 			else{
@@ -144,18 +134,18 @@ function register($user){
 	}
 }
 function login($user){
-	$result = DbContext::query("SELECT * FROM user WHERE email=?",[$user['email']]);
+	$result = DbContext::query("SELECT * FROM appuser WHERE email=?",[$user['email']]);
 	if($result['status']){
-		$hit = $result[0];
+		$result = $result['data'][0];
 		//verify password
-		$isPassword = password_check($user['password'], $hit['password']);
+		$isPassword = password_check($user['password'], $result['password']);
 		if($isPassword){
 			//adding claims
 			//user and details
-			$id = $result[0]['id'];
-			$uid = $result[0]['uid'];
-			$email = $result[0]['email'];
-			$username = $result[0]['username'];
+			$id = $result['id'];
+			$uid = $result['uid'];
+			$email = $result['email'];
+			$username = $result['username'];
 			$claims = array('id'=> $id, 'uid'=> $uid, 'email'=>$email, 'username'=>$username);
 	
 			$token = JWT::JWT_encode(json_encode($claims));
@@ -245,7 +235,7 @@ function fileHandler($name,$file_name,$path){
 	$messages = array();
 	$fileInfo = array();
 	$extension= strtolower(pathinfo($_FILES[$name]['name'],PATHINFO_EXTENSION));
-	$extensions = array("jpg","jpeg","png","gif","txt");
+	$extensions = array("jpg","jpeg","png","gif","txt", "xlsx");
 	$extensionsAsString = implode(", ", $extensions);
 	if(!empty($_FILES[$name]['name'])){
 		if(!in_array($extension,$extensions))
