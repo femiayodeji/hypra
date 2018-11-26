@@ -12,5 +12,8 @@ Request::set('home',function(){
 Request::set('mobile',function(){
 	Request::method();
 });
+Request::set('user',function(){
+	Request::method();
+});
 
 ?>

@@ -3,13 +3,13 @@
 class MobileController extends Controller{
 	public function Index(){
 		get(function(){
-			$arr = array("name" => "Josiah", "age" => 68, "email" => "mighty@mail.com");
+			$arr = array("name" => "feminstincts", "age" => 25, "email" => "feminstincts@gmail.com");
 			json($arr);
 		});
 	}
 	public function here(){
 		post(function(){
-			json($out);
+			json("Hi there");
 		});
 	}
 }
